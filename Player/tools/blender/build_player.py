@@ -184,6 +184,8 @@ for i, x in enumerate((0.05, 0.0, -0.06)):
     ob = blob(f"Fringe{i}", head, (a + b) / 2, (0.045, 0.045, (b - a).length / 2), "hair", kind="cone")
     ob.rotation_euler = (a - b).normalized().to_track_quat("Z", "Y").to_euler()
 
+head.scale = (1.18, 1.18, 1.18)  # bigger head, like an RPG walk sprite
+
 JOINTS = {}
 for side, s in (("L", 1), ("R", -1)):
     sh = empty(f"Shoulder{side}", (0.30 * s, 0, 1.42), chest)
@@ -223,12 +225,12 @@ def pose(guard=1.0, step=0.0, stance=0.0):
     # arms: guard lifts the forearms in front of the face; hands down hang loose
     for side, j, s in (("L", L, 1), ("R", R, -1)):
         lead = 1.0 if side == "L" else 0.7
-        j["sh"].rotation_euler = (-0.7 * guard * lead + 0.25 * step * s * (1 - guard),
+        j["sh"].rotation_euler = (-0.7 * guard * lead + 0.5 * step * s * (1 - guard),
                                   0, 0.15 * s * (1 - guard) - 0.25 * s * guard)
-        j["el"].rotation_euler = (-2.5 * guard * lead - 0.25 * (1 - guard), 0, 0)
+        j["el"].rotation_euler = (-2.5 * guard * lead - 0.35 * (1 - guard), 0, 0)
     # legs
     for side, j, s in (("L", L, 1), ("R", R, -1)):
-        swing = -0.45 * step * s
+        swing = -0.38 * step * s
         j["hp"].rotation_euler = (swing - 0.15 * stance * s, 0, 0)
         j["hp"].rotation_euler.y = -0.18 * stance * s
         bend = 0.35 * stance + (0.5 if swing > 0.1 else 0.1 * abs(step))
