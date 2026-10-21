@@ -16,11 +16,9 @@ const COLS := 8
 
 # palette colour -> group; ink lines go between different groups
 const PALETTE := {
-	"f7ddc6": "skin", "c1789a": "skin", "6b2151": "skin",
-	"f3f2b1": "hair", "c19458": "hair", "6a3913": "hair",
-	"108351": "shorts", "155236": "shorts", "0e2e21": "shorts",
-	"9ea9ba": "metal", "576271": "metal",
-	"5bd7ef": "eye",
+	"d9b98a": "skin", "a8865a": "skin", "6b4f33": "skin",
+	"6e5434": "hair", "3d2e1e": "hair", "1f1610": "hair",
+	"7dffa6": "eye", "f4f0e0": "teeth", "c9c2ad": "teeth",
 }
 const INK := Color("010101")
 
@@ -92,7 +90,7 @@ func _frame(path: String) -> Image:
 					result.set_pixel(x, y, INK)
 				# inner line: paint the lower/right side of a group change
 				elif here != "" and there != "" and here != there and (d.x > 0 or d.y > 0) \
-						and here != "eye" and there != "eye" and here != "metal":
+						and not here in ["eye", "teeth"] and not there in ["eye", "teeth"]:
 					result.set_pixel(n.x, n.y, INK)
 	return result
 
