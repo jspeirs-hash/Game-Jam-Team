@@ -33,12 +33,15 @@ var can_move: bool = true
 const ROWS := { "down": 0, "up": 1, "side": 2 }
 ## Local-only art (git-ignored) wins over the shared sheet.
 const SHEETS := ["res://Player/art/player_sheet_local.png", "res://Player/art/player_sheet.png"]
-## Sheets with 5 rows also have a hands-down walk (row 3) and guard frames (row 4:
-## up, halfway, down). He lowers his guard to walk and raises it when he stops.
+## Sheets with 5 rows also have a hands-down side walk (row 3) and guard frames
+## (row 4: up, halfway, down); 7 rows add the same for facing down (rows 5, 6).
+## He lowers his guard to walk and raises it when he stops.
 const GUARD_ROWS := 5
+const FRONT_GUARD_ROWS := 7
 const GUARD_FPS := 12.0
 
 var _has_guard := false
+var _rows := 3
 var _was_moving := false
 
 
@@ -49,7 +52,8 @@ func _ready() -> void:
 			if ResourceLoader.exists(path):
 				sprite_sheet = load(path)
 				break
-	_has_guard = sprite_sheet.get_height() >= frame_size.y * GUARD_ROWS
+	_rows = sprite_sheet.get_height() / frame_size.y
+	_has_guard = _rows >= GUARD_ROWS
 	sprite.sprite_frames = _build_frames()
 	sprite.position.y = -frame_size.y / 2.0 + foot_padding
 	sprite.play("idle_down")
@@ -88,17 +92,23 @@ func _build_frames() -> SpriteFrames:
 		frames.add_frame(idle, _cut(0, row))
 		frames.add_animation(walk)
 		frames.set_animation_speed(walk, walk_fps)
-		var walk_row := 3 if _has_guard and dir != "up" else row
+		var walk_row := row
+		var guard_row := 4
+		if _has_guard and dir != "up":
+			walk_row = 3
+			if dir == "down" and _rows >= FRONT_GUARD_ROWS:
+				walk_row = 5
+				guard_row = 6
 		for col in 4:
 			frames.add_frame(walk, _cut(col, walk_row))
-	if _has_guard:
-		for anim in [&"guard_lower", &"guard_raise"]:
-			frames.add_animation(anim)
-			frames.set_animation_loop(anim, false)
-			frames.set_animation_speed(anim, GUARD_FPS)
-			var order := [0, 1, 2] if anim == &"guard_lower" else [2, 1, 0]
-			for col in order:
-				frames.add_frame(anim, _cut(col, 4))
+		if _has_guard and dir != "up":
+			for kind in ["lower", "raise"]:
+				var anim := StringName("guard_%s_%s" % [kind, dir])
+				frames.add_animation(anim)
+				frames.set_animation_loop(anim, false)
+				frames.set_animation_speed(anim, GUARD_FPS)
+				for col in ([0, 1, 2] if kind == "lower" else [2, 1, 0]):
+					frames.add_frame(anim, _cut(col, guard_row))
 	return frames
 
 
@@ -159,9 +169,9 @@ func _update_animation(moving: bool, running: bool) -> void:
 	var anim := StringName(("walk_" if moving else "idle_") + dir)
 	if _has_guard and moving != _was_moving and dir != "up":
 		sprite.speed_scale = 1.0
-		sprite.play(&"guard_lower" if moving else &"guard_raise")
+		sprite.play(StringName("guard_%s_%s" % ["lower" if moving else "raise", dir]))
 	_was_moving = moving
-	var transition := &"guard_lower" if moving else &"guard_raise"
+	var transition := StringName("guard_%s_%s" % ["lower" if moving else "raise", dir])
 	if sprite.animation == transition and sprite.is_playing():
 		return # let the guard finish moving first
 	if sprite.animation != anim:
