@@ -28,7 +28,7 @@ random.seed(7)
 
 # [highlight, base, shadow] toon ramps
 SKIN = ["d9b98a", "a8865a", "6b4f33"]
-HAIR = ["6e5434", "3d2e1e", "1f1610"]
+HAIR = ["5a5048", "2e2925", "171412"]
 EYE = ["7dffa6", "7dffa6", "7dffa6"]  # glowing green
 TEETH = ["f4f0e0", "f4f0e0", "c9c2ad"]
 
@@ -172,13 +172,14 @@ for s in (1, -1):  # pointed ears
     ob = blob(f"Ear{s}", head, (a + b) / 2, (0.035, 0.035, (b - a).length / 2), "skin", kind="cone")
     ob.rotation_euler = (b - a).normalized().to_track_quat("Z", "Y").to_euler()
 
-# long dark hair: a cap, a curtain down the back and strands framing the face
-blob("HairCap", head, (0, 0.06, 1.53), (0.26, 0.23, 0.20), "hair")
-blob("HairBack", head, (0, 0.08, 1.36), (0.25, 0.16, 0.27), "hair")
-# a few big, simple shapes: small strands flicker at sprite size
+# dark hair slicked back into a messy bun, with a loose strand down each side
+# of the face. Kept to a few big shapes: small strands flicker at sprite size.
+blob("HairCap", head, (0, 0.08, 1.52), (0.255, 0.24, 0.21), "hair")
+blob("HairNape", head, (0, 0.13, 1.34), (0.20, 0.12, 0.12), "hair")
+blob("Bun", head, (0, 0.25, 1.60), (0.10, 0.10, 0.09), "hair")
+blob("BunTuft", head, (0, 0.31, 1.67), (0.07, 0.06, 0.05), "hair")
 for s in (1, -1):
-    blob(f"HairSide{s}", head, (0.20 * s, 0.04, 1.30), (0.075, 0.11, 0.22), "hair")
-blob("Fringe", head, (0.02, -0.18, 1.57), (0.18, 0.07, 0.07), "hair")
+    blob(f"Strand{s}", head, (0.17 * s, -0.15, 1.40), (0.035, 0.035, 0.11), "hair")
 
 JOINTS = {}
 for side, s in (("L", 1), ("R", -1)):

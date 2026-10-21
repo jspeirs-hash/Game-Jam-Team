@@ -18,7 +18,7 @@ const GUARD_FRAMES := 8
 # palette colour -> group; ink lines go between different groups
 const PALETTE := {
 	"d9b98a": "skin", "a8865a": "skin", "6b4f33": "skin",
-	"6e5434": "hair", "3d2e1e": "hair", "1f1610": "hair",
+	"5a5048": "hair", "2e2925": "hair", "171412": "hair",
 	"7dffa6": "eye", "f4f0e0": "teeth", "c9c2ad": "teeth",
 }
 const INK := Color("010101")
