@@ -17,7 +17,8 @@ signal interacted(target: Node)
 @export_group("Look")
 ## Sprite sheet: 4 columns (stand, step, stand, step) x 3 rows (down, up, right).
 ## Left is the right row flipped. Swap in real art with the same layout.
-@export var sprite_sheet: Texture2D = preload("res://Player/art/player_sheet.png")
+## Leave empty to use player_sheet_local.png if it exists, else player_sheet.png.
+@export var sprite_sheet: Texture2D
 @export var frame_size: Vector2i = Vector2i(32, 52)
 ## Empty pixels under the feet in each frame.
 @export var foot_padding: int = 2
@@ -30,10 +31,17 @@ var can_move: bool = true
 @onready var interact_ray: RayCast2D = $InteractRay
 
 const ROWS := { "down": 0, "up": 1, "side": 2 }
+## Local-only art (git-ignored) wins over the shared sheet.
+const SHEETS := ["res://Player/art/player_sheet_local.png", "res://Player/art/player_sheet.png"]
 
 
 func _ready() -> void:
 	_ensure_input_actions()
+	if sprite_sheet == null:
+		for path in SHEETS:
+			if ResourceLoader.exists(path):
+				sprite_sheet = load(path)
+				break
 	sprite.sprite_frames = _build_frames()
 	sprite.position.y = -frame_size.y / 2.0 + foot_padding
 	sprite.play("idle_down")
