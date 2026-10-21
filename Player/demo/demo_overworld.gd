@@ -9,11 +9,11 @@ func _ready() -> void:
 		block.position = Vector2(randf_range(-200, 200), randf_range(-120, 120))
 		var shape := CollisionShape2D.new()
 		var rect := RectangleShape2D.new()
-		rect.size = Vector2(24, 8)
+		rect.size = Vector2(32, 10)
 		shape.shape = rect
 		block.add_child(shape)
 		var visual := Polygon2D.new()
-		visual.polygon = PackedVector2Array([Vector2(-12, 4), Vector2(12, 4), Vector2(12, -26), Vector2(-12, -26)])
+		visual.polygon = PackedVector2Array([Vector2(-16, 5), Vector2(16, 5), Vector2(16, -40), Vector2(-16, -40)])
 		visual.color = Color.from_hsv(randf(), 0.35, 0.7)
 		block.add_child(visual)
 		add_child(block)

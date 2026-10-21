@@ -18,7 +18,7 @@ signal interacted(target: Node)
 ## Sprite sheet: 4 columns (stand, step, stand, step) x 3 rows (down, up, right).
 ## Left is the right row flipped. Swap in real art with the same layout.
 @export var sprite_sheet: Texture2D = preload("res://Player/art/player_sheet.png")
-@export var frame_size: Vector2i = Vector2i(24, 36)
+@export var frame_size: Vector2i = Vector2i(32, 52)
 ## Empty pixels under the feet in each frame.
 @export var foot_padding: int = 2
 @export var walk_fps: float = 8.0
@@ -143,5 +143,5 @@ func _update_animation(moving: bool, running: bool) -> void:
 func _draw() -> void:
 	# Soft shadow at the feet sells the 2.5D look.
 	draw_set_transform(Vector2.ZERO, 0.0, Vector2(1.0, 0.4))
-	draw_circle(Vector2(0, -1), 9.0, Color(0, 0, 0, 0.3))
+	draw_circle(Vector2(0, -1), 12.0, Color(0, 0, 0, 0.3))
 	draw_set_transform(Vector2.ZERO, 0.0, Vector2.ONE)
