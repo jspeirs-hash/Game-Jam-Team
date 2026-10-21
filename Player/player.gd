@@ -14,19 +14,29 @@ signal interacted(target: Node)
 ## Squash the vertical axis a bit so up/down feels like walking into depth.
 @export_range(0.5, 1.0) var vertical_scale: float = 0.85
 
+@export_group("Look")
+## Sprite sheet: 4 columns (stand, step, stand, step) x 3 rows (down, up, right).
+## Left is the right row flipped. Swap in real art with the same layout.
+@export var sprite_sheet: Texture2D = preload("res://Player/art/player_sheet.png")
+@export var frame_size: Vector2i = Vector2i(24, 36)
+## Empty pixels under the feet in each frame.
+@export var foot_padding: int = 2
+@export var walk_fps: float = 8.0
+
 var facing: Vector2 = Vector2.DOWN
 var can_move: bool = true
 
-@onready var sprite: Sprite2D = $Sprite2D
+@onready var sprite: AnimatedSprite2D = $Sprite
 @onready var interact_ray: RayCast2D = $InteractRay
 
-var _bob_time := 0.0
-var _sprite_base_y := 0.0
+const ROWS := { "down": 0, "up": 1, "side": 2 }
 
 
 func _ready() -> void:
 	_ensure_input_actions()
-	_sprite_base_y = sprite.position.y
+	sprite.sprite_frames = _build_frames()
+	sprite.position.y = -frame_size.y / 2.0 + foot_padding
+	sprite.play("idle_down")
 
 
 ## Adds the movement actions if they aren't in Project Settings > Input Map yet,
@@ -50,21 +60,46 @@ static func _ensure_input_actions() -> void:
 			InputMap.action_add_event(action, ev)
 
 
+## Cuts the sheet into idle_<dir> and walk_<dir> animations.
+func _build_frames() -> SpriteFrames:
+	var frames := SpriteFrames.new()
+	frames.remove_animation(&"default")
+	for dir in ROWS:
+		var row: int = ROWS[dir]
+		var idle := StringName("idle_" + dir)
+		var walk := StringName("walk_" + dir)
+		frames.add_animation(idle)
+		frames.add_frame(idle, _cut(0, row))
+		frames.add_animation(walk)
+		frames.set_animation_speed(walk, walk_fps)
+		for col in 4:
+			frames.add_frame(walk, _cut(col, row))
+	return frames
+
+
+func _cut(col: int, row: int) -> AtlasTexture:
+	var t := AtlasTexture.new()
+	t.atlas = sprite_sheet
+	t.region = Rect2(col * frame_size.x, row * frame_size.y, frame_size.x, frame_size.y)
+	return t
+
+
 func _physics_process(delta: float) -> void:
 	var input := Vector2.ZERO
 	if can_move:
 		input = Input.get_vector("move_left", "move_right", "move_up", "move_down")
 
+	var running := Input.is_action_pressed("run")
 	if input != Vector2.ZERO:
 		facing = input.normalized()
-		var speed := run_speed if Input.is_action_pressed("run") else walk_speed
+		var speed := run_speed if running else walk_speed
 		var target := Vector2(input.x, input.y * vertical_scale).normalized() * speed * input.length()
 		velocity = velocity.move_toward(target, acceleration * delta)
 	else:
 		velocity = velocity.move_toward(Vector2.ZERO, friction * delta)
 
 	move_and_slide()
-	_update_visuals(delta)
+	_update_animation(input != Vector2.ZERO, running)
 	interact_ray.target_position = facing * 20.0
 
 
@@ -86,23 +121,27 @@ func _try_interact() -> void:
 	interacted.emit(target)
 
 
-func _update_visuals(delta: float) -> void:
-	if absf(facing.x) > 0.1:
+func _facing_name() -> String:
+	if absf(facing.x) > absf(facing.y) * 0.9:
+		return "side"
+	return "down" if facing.y > 0.0 else "up"
+
+
+func _update_animation(moving: bool, running: bool) -> void:
+	var dir := _facing_name()
+	if dir == "side":
 		sprite.flip_h = facing.x < 0.0
-	var moving := velocity.length() > 5.0
-	if moving:
-		_bob_time += delta * velocity.length() * 0.08
-		sprite.position.y = _sprite_base_y - absf(sin(_bob_time)) * 3.0
-	else:
-		_bob_time = 0.0
-		sprite.position.y = lerpf(sprite.position.y, _sprite_base_y, 0.3)
-	queue_redraw()
+	var anim := StringName(("walk_" if moving else "idle_") + dir)
+	if sprite.animation != anim:
+		var frame := sprite.frame
+		sprite.play(anim)
+		if moving:
+			sprite.frame = frame # keep the step going when turning
+	sprite.speed_scale = run_speed / walk_speed if moving and running else 1.0
 
 
 func _draw() -> void:
 	# Soft shadow at the feet sells the 2.5D look.
-	var lift := _sprite_base_y - sprite.position.y
-	var w := 14.0 - lift * 0.8
-	draw_set_transform(Vector2.ZERO, 0.0, Vector2(1.0, 0.45))
-	draw_circle(Vector2.ZERO, w, Color(0, 0, 0, 0.3))
+	draw_set_transform(Vector2.ZERO, 0.0, Vector2(1.0, 0.4))
+	draw_circle(Vector2(0, -1), 9.0, Color(0, 0, 0, 0.3))
 	draw_set_transform(Vector2.ZERO, 0.0, Vector2.ONE)
