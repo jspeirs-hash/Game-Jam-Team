@@ -31,13 +31,21 @@ func _init() -> void:
 	sheet.fill(Color(0, 0, 0, 0))
 	var views := ["front", "back", "side"]
 	for row in 3:
-		var base := _grid(dir + "/" + views[row] + ".txt")
-		for f in FRAMES:
-			var frame: Image
-			if views[row] == "side":
-				frame = _side_step(base, STRIDE[f])
-			else:
-				frame = _front_step(base, LIFT[f][0], LIFT[f][1])
+		var base: Image = _grid(dir + "/" + views[row] + ".txt")
+		var frames: Array[Image] = []
+		var stride_path: String = dir + "/" + views[row] + "_stride.txt"
+		if views[row] == "side" and FileAccess.file_exists(stride_path):
+			# hand-drawn stride: stand, near leg forward, stand, far leg forward
+			var stride := _grid(stride_path)
+			frames = [base, stride, base, _swap_legs(stride)]
+		else:
+			for f in FRAMES:
+				if views[row] == "side":
+					frames.append(_side_step(base, STRIDE[f]))
+				else:
+					frames.append(_front_step(base, LIFT[f][0], LIFT[f][1]))
+		for f in frames.size():
+			var frame := frames[f]
 			var at := Vector2i(f * W + (W - frame.get_width()) / 2, row * H + H - FOOT_PADDING - frame.get_height())
 			sheet.blend_rect(frame, Rect2i(Vector2i.ZERO, frame.get_size()), at)
 	var err := sheet.save_png(args[1])
@@ -58,6 +66,22 @@ func _grid(path: String) -> Image:
 			if PALETTE.has(ch):
 				img.set_pixel(x, y, Color(PALETTE[ch]))
 	return img
+
+
+## Swaps light and dark on the legs so the other leg reads as in front.
+func _swap_legs(img: Image) -> Image:
+	var out: Image = img.duplicate()
+	var dark := Color(PALETTE["S"])
+	var mid := Color(PALETTE["s"])
+	var light := Color(PALETTE["L"])
+	for y in range(_legs_top(img) - 1, img.get_height()):
+		for x in img.get_width():
+			var c := img.get_pixel(x, y)
+			if c.is_equal_approx(dark):
+				out.set_pixel(x, y, mid)
+			elif c.is_equal_approx(mid) or c.is_equal_approx(light):
+				out.set_pixel(x, y, dark)
+	return out
 
 
 ## First row (from the bottom) where the legs split, i.e. the crotch.
