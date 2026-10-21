@@ -1,0 +1,18 @@
+[gd_scene load_steps=3 format=3]
+
+[ext_resource type="Script" path="res://Player/demo/demo_overworld.gd" id="1_demo"]
+[ext_resource type="PackedScene" path="res://Player/player.tscn" id="2_player"]
+
+[node name="DemoOverworld" type="Node2D"]
+y_sort_enabled = true
+script = ExtResource("1_demo")
+
+[node name="Ground" type="ColorRect" parent="."]
+z_index = -1
+offset_left = -400.0
+offset_top = -300.0
+offset_right = 400.0
+offset_bottom = 300.0
+color = Color(0.3, 0.42, 0.3, 1)
+
+[node name="Player" parent="." instance=ExtResource("2_player")]
