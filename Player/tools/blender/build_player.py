@@ -21,7 +21,8 @@ BLEND = ARGS[1] if len(ARGS) > 1 else None
 os.makedirs(OUT, exist_ok=True)
 
 W, H = 32, 52
-WALK_FRAMES = 8
+WALK_FRAMES = 16
+GUARD_FRAMES = 8
 SCALE = int(os.environ.get("PIXEL_SCALE", "1"))  # >1 renders big previews
 random.seed(7)
 
@@ -174,18 +175,10 @@ for s in (1, -1):  # pointed ears
 # long dark hair: a cap, a curtain down the back and strands framing the face
 blob("HairCap", head, (0, 0.06, 1.53), (0.26, 0.23, 0.20), "hair")
 blob("HairBack", head, (0, 0.08, 1.36), (0.25, 0.16, 0.27), "hair")
-for i, (x, y, top, bottom, w) in enumerate((
-        (0.22, -0.06, 1.55, 1.08, 0.06), (-0.22, -0.06, 1.55, 1.08, 0.06),
-        (0.17, -0.15, 1.62, 1.22, 0.05), (-0.17, -0.15, 1.62, 1.20, 0.05),
-        (0.06, -0.21, 1.66, 1.46, 0.045), (-0.09, -0.20, 1.66, 1.44, 0.04),
-        (0.25, 0.06, 1.50, 1.00, 0.06), (-0.25, 0.06, 1.50, 1.00, 0.06),
-        # strands down the back so it reads as hair, not a helmet
-        (0.16, 0.22, 1.66, 1.02, 0.07), (-0.16, 0.22, 1.66, 1.04, 0.07),
-        (0.05, 0.25, 1.70, 1.00, 0.07), (-0.06, 0.25, 1.70, 1.03, 0.07),
-        (0.24, 0.16, 1.58, 1.06, 0.06), (-0.24, 0.16, 1.58, 1.08, 0.06))):
-    a, b = Vector((x, y, top)), Vector((x * 1.08, y, bottom))
-    ob = blob(f"Strand{i}", head, (a + b) / 2, (w, w, (a - b).length / 2), "hair", kind="cone")
-    ob.rotation_euler = (b - a).normalized().to_track_quat("Z", "Y").to_euler()
+# a few big, simple shapes: small strands flicker at sprite size
+for s in (1, -1):
+    blob(f"HairSide{s}", head, (0.20 * s, 0.04, 1.30), (0.075, 0.11, 0.22), "hair")
+blob("Fringe", head, (0.02, -0.18, 1.57), (0.18, 0.07, 0.07), "hair")
 
 JOINTS = {}
 for side, s in (("L", 1), ("R", -1)):
@@ -240,9 +233,10 @@ def pose(guard=1.0, step=0.0, stance=0.0, phase=None):
             bend = 0.35 * stance + (0.5 if swing > 0.1 else 0.1 * abs(step))
         j["kn"].rotation_euler = (bend, 0, 0)
         j["hp"].rotation_euler.x -= bend * 0.5
-    hips.location.z = HIP_Z - 0.04 * stance - 0.02 * abs(step)
-    neck.rotation_euler = (0, 0, -0.03 * step)  # keep the head (and mane) steady
-    chest.rotation_euler = (0.08 * guard, 0, 0.03 * step)
+    # the body never bobs here: bobbing moves the head by part of a pixel and
+    # makes it flicker. make_sheet_from_renders.gd bobs by whole pixels instead.
+    hips.location.z = HIP_Z - 0.04 * stance
+    chest.rotation_euler = (0.08 * guard, 0, 0)
 
 
 # --- camera and light ----------------------------------------------------------
@@ -271,9 +265,10 @@ VIEWS = {"down": 0.0, "up": math.pi, "side": math.pi / 2}
 
 POSES = {
     "guard": dict(guard=1.0, stance=1.0),
-    "guard_mid": dict(guard=0.5, stance=0.6),
-    "guard_down": dict(guard=0.0, stance=0.2),
-    # 8-frame walk cycle
+    # guard dropping, fists up -> hands down
+    **{f"guard_t{i}": dict(guard=1 - i / (GUARD_FRAMES - 1), stance=1 - 0.8 * i / (GUARD_FRAMES - 1))
+       for i in range(GUARD_FRAMES)},
+    # walk cycle
     **{f"walk{i}": dict(guard=0.0, phase=2 * math.pi * i / WALK_FRAMES) for i in range(WALK_FRAMES)},
 }
 

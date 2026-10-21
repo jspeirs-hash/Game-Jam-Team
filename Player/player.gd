@@ -104,7 +104,7 @@ func _build_frames() -> SpriteFrames:
 			if dir == "down" and _rows >= FRONT_GUARD_ROWS:
 				walk_row = 5
 				guard_row = 6
-		var cols := sprite_sheet.get_width() / frame_size.x
+		var cols := _frames_in_row(walk_row)
 		frames.set_animation_speed(walk, walk_fps * cols / 4.0)
 		for col in cols:
 			frames.add_frame(walk, _cut(col, walk_row))
@@ -113,10 +113,25 @@ func _build_frames() -> SpriteFrames:
 				var anim := StringName("guard_%s_%s" % [kind, dir])
 				frames.add_animation(anim)
 				frames.set_animation_loop(anim, false)
-				frames.set_animation_speed(anim, GUARD_FPS)
-				for col in ([0, 1, 2] if kind == "lower" else [2, 1, 0]):
+				var order := range(_frames_in_row(guard_row))
+				if kind == "raise":
+					order.reverse()
+				# same duration whatever the frame count (3 frames = 0.25 s)
+				frames.set_animation_speed(anim, GUARD_FPS * order.size() / 3.0)
+				for col in order:
 					frames.add_frame(anim, _cut(col, guard_row))
 	return frames
+
+
+## Number of frames drawn in a row (frames after the last drawn one are empty).
+func _frames_in_row(row: int) -> int:
+	var img := sprite_sheet.get_image()
+	var count := 0
+	for col in img.get_width() / frame_size.x:
+		var rect := Rect2i(col * frame_size.x, row * frame_size.y, frame_size.x, frame_size.y)
+		if not img.get_region(rect).is_invisible():
+			count = col + 1
+	return count
 
 
 func _cut(col: int, row: int) -> AtlasTexture:

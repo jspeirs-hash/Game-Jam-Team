@@ -5,14 +5,15 @@ extends SceneTree
 ##
 ##   godot --headless --path . --script res://Player/tools/make_sheet_from_renders.gd -- <render_dir> <out.png>
 ##
-## Sheet rows (32 x 52 frames, 8 columns; walks use all 8):
+## Sheet rows (32 x 52 frames, 16 columns; walks use all 16, guard drops 8):
 ##   0 down: guard          1 up: walk (hands down)     2 side: guard
 ##   3 side: walk           4 side: guard up, halfway, down
 ##   5 down: walk           6 down: guard up, halfway, down
 
 const W := 32
 const H := 52
-const COLS := 8
+const COLS := 16
+const GUARD_FRAMES := 8
 
 # palette colour -> group; ink lines go between different groups
 const PALETTE := {
@@ -36,7 +37,9 @@ func _init() -> void:
 	var walk := []
 	for i in COLS:
 		walk.append("walk%d" % i)
-	var guard := ["guard", "guard_mid", "guard_down"]
+	var guard := []
+	for i in GUARD_FRAMES:
+		guard.append("guard_t%d" % i)
 	var rows := [
 		["down", ["guard"]],
 		["up", walk],
@@ -52,7 +55,9 @@ func _init() -> void:
 		var names: Array = rows[r][1]
 		for c in names.size():
 			var f := _frame("%s/%s_%s.png" % [dir, rows[r][0], names[c]])
-			sheet.blit_rect(f, Rect2i(0, 0, W, H), Vector2i(c * W, r * H))
+			# bob by a whole pixel at full stride (the renders themselves never bob)
+			var dip := 1 if names == walk and absf(sin(TAU * c / COLS)) > 0.7 else 0
+			sheet.blit_rect(f, Rect2i(0, 0, W, H - dip), Vector2i(c * W, r * H + dip))
 	var err := sheet.save_png(args[1])
 	print("saved ", args[1], ": ", error_string(err))
 	quit()
