@@ -20,6 +20,7 @@ const PALETTE := {
 	"d9b98a": "skin", "a8865a": "skin", "6b4f33": "skin",
 	"5a5048": "hair", "2e2925": "hair", "171412": "hair",
 	"7dffa6": "eye", "f4f0e0": "teeth", "c9c2ad": "teeth",
+	"8a4a3e": "lip", "7a3b33": "lip", "5a2a24": "lip",
 }
 const INK := Color("010101")
 
@@ -95,7 +96,7 @@ func _frame(path: String) -> Image:
 					result.set_pixel(x, y, INK)
 				# inner line: paint the lower/right side of a group change
 				elif here != "" and there != "" and here != there and (d.x > 0 or d.y > 0) \
-						and not here in ["eye", "teeth"] and not there in ["eye", "teeth"]:
+						and not here in ["eye", "teeth", "lip"] and not there in ["eye", "teeth", "lip"]:
 					result.set_pixel(n.x, n.y, INK)
 	return result
 

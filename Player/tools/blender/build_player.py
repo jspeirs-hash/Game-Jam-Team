@@ -31,6 +31,7 @@ SKIN = ["d9b98a", "a8865a", "6b4f33"]
 HAIR = ["5a5048", "2e2925", "171412"]
 EYE = ["7dffa6", "7dffa6", "7dffa6"]  # glowing green
 TEETH = ["f4f0e0", "f4f0e0", "c9c2ad"]
+LIP = ["8a4a3e", "7a3b33", "5a2a24"]
 
 
 def hex_rgba(h):
@@ -68,6 +69,7 @@ MAT = {
     "hair": toon_material("Hair", HAIR, shadow_at=0.06),
     "eye": toon_material("Eye", EYE),
     "teeth": toon_material("Teeth", TEETH),
+    "lip": toon_material("Lip", LIP),
 }
 
 
@@ -167,6 +169,12 @@ blob("Jaw", head, (0, -0.07, 1.27), (0.16, 0.15, 0.11), "skin")
 blob("EyeL", head, (0.085, -0.215, 1.41), (0.055, 0.02, 0.032), "eye")
 blob("EyeR", head, (-0.085, -0.215, 1.41), (0.055, 0.02, 0.032), "eye")
 blob("Teeth", head, (0, -0.205, 1.27), (0.10, 0.02, 0.028), "teeth", kind="cube")
+blob("LipTop", head, (0, -0.208, 1.302), (0.11, 0.02, 0.012), "lip", kind="cube")
+blob("LipBottom", head, (0, -0.2, 1.238), (0.09, 0.02, 0.012), "lip", kind="cube")
+for s in (1, -1):
+    # dark rim around each glowing eye and an angled brow above it
+    blob(f"Socket{s}", head, (0.085 * s, -0.205, 1.41), (0.07, 0.02, 0.045), "hair")
+    blob(f"Brow{s}", head, (0.085 * s, -0.215, 1.475), (0.07, 0.02, 0.014), "hair", rot=(0, 0.35 * s, 0), kind="cube")
 for s in (1, -1):  # pointed ears
     a, b = Vector((0.22 * s, 0.0, 1.40)), Vector((0.34 * s, 0.02, 1.50))
     ob = blob(f"Ear{s}", head, (a + b) / 2, (0.035, 0.035, (b - a).length / 2), "skin", kind="cone")
@@ -174,12 +182,18 @@ for s in (1, -1):  # pointed ears
 
 # dark hair slicked back into a messy bun, with a loose strand down each side
 # of the face. Kept to a few big shapes: small strands flicker at sprite size.
-blob("HairCap", head, (0, 0.08, 1.52), (0.255, 0.24, 0.21), "hair")
+blob("HairCap", head, (0, 0.12, 1.52), (0.255, 0.22, 0.21), "hair")
+blob("Hairline", head, (0, -0.02, 1.62), (0.23, 0.17, 0.10), "hair")
 blob("HairNape", head, (0, 0.13, 1.34), (0.20, 0.12, 0.12), "hair")
 blob("Bun", head, (0, 0.25, 1.60), (0.10, 0.10, 0.09), "hair")
 blob("BunTuft", head, (0, 0.31, 1.67), (0.07, 0.06, 0.05), "hair")
 for s in (1, -1):
     blob(f"Strand{s}", head, (0.17 * s, -0.15, 1.40), (0.035, 0.035, 0.11), "hair")
+# combed-back locks give the hair some texture without tiny flickering bits
+for x in (-0.13, 0.0, 0.13):
+    blob(f"Lock{x}", head, (x, 0.05, 1.66), (0.06, 0.18, 0.035), "hair", rot=(-0.35, 0, 0))
+
+head.scale = (1.35, 1.35, 1.35)  # big head so the face has room for detail
 
 JOINTS = {}
 for side, s in (("L", 1), ("R", -1)):
@@ -244,13 +258,13 @@ def pose(guard=1.0, step=0.0, stance=0.0, phase=None):
 
 cam_data = bpy.data.cameras.new("Cam")
 cam_data.type = "ORTHO"
-cam_data.ortho_scale = 1.95
+cam_data.ortho_scale = 2.15
 cam = bpy.data.objects.new("Cam", cam_data)
 scene.collection.objects.link(cam)
 scene.camera = cam
 elev = math.radians(28)
 dist = 8
-cam.location = (0, -dist * math.cos(elev), 0.90 + dist * math.sin(elev))
+cam.location = (0, -dist * math.cos(elev), 1.0 + dist * math.sin(elev))
 cam.rotation_euler = (math.pi / 2 - elev, 0, 0)
 cam_data.shift_y = -0.02
 
@@ -278,6 +292,9 @@ for view, yaw in VIEWS.items():
     for name, p in POSES.items():
         pose(**p)
         root.rotation_euler = (0, 0, yaw)
+        if view == "side":
+            # turn the head a little toward the camera so the face shows
+            neck.rotation_euler.z = -0.5
         bpy.context.view_layer.update()
         scene.render.filepath = os.path.join(OUT, f"{view}_{name}.png")
         bpy.ops.render.render(write_still=True)
