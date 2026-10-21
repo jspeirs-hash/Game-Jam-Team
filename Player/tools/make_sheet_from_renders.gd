@@ -5,13 +5,14 @@ extends SceneTree
 ##
 ##   godot --headless --path . --script res://Player/tools/make_sheet_from_renders.gd -- <render_dir> <out.png>
 ##
-## Sheet rows (32 x 52 frames, 4 columns):
+## Sheet rows (32 x 52 frames, 8 columns; walks use all 8):
 ##   0 down: guard          1 up: walk (hands down)     2 side: guard
 ##   3 side: walk           4 side: guard up, halfway, down
 ##   5 down: walk           6 down: guard up, halfway, down
 
 const W := 32
 const H := 52
+const COLS := 8
 
 # palette colour -> group; ink lines go between different groups
 const PALETTE := {
@@ -34,7 +35,9 @@ func _init() -> void:
 		colors.append(Color(h))
 		groups.append(PALETTE[h])
 
-	var walk := ["walk0", "walk1", "walk2", "walk3"]
+	var walk := []
+	for i in COLS:
+		walk.append("walk%d" % i)
 	var guard := ["guard", "guard_mid", "guard_down"]
 	var rows := [
 		["down", ["guard"]],
@@ -45,7 +48,7 @@ func _init() -> void:
 		["down", walk],
 		["down", guard],
 	]
-	var sheet := Image.create(W * 4, H * rows.size(), false, Image.FORMAT_RGBA8)
+	var sheet := Image.create(W * COLS, H * rows.size(), false, Image.FORMAT_RGBA8)
 	sheet.fill(Color(0, 0, 0, 0))
 	for r in rows.size():
 		var names: Array = rows[r][1]

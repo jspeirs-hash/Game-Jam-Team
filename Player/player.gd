@@ -29,6 +29,10 @@ var can_move: bool = true
 
 @onready var sprite: AnimatedSprite2D = $Sprite
 @onready var interact_ray: RayCast2D = $InteractRay
+@onready var camera: Camera2D = $Camera2D
+
+var _sprite_offset := Vector2.ZERO
+var _camera_offset := Vector2.ZERO
 
 const ROWS := { "down": 0, "up": 1, "side": 2 }
 ## Local-only art (git-ignored) wins over the shared sheet.
@@ -56,6 +60,8 @@ func _ready() -> void:
 	_has_guard = _rows >= GUARD_ROWS
 	sprite.sprite_frames = _build_frames()
 	sprite.position.y = -frame_size.y / 2.0 + foot_padding
+	_sprite_offset = sprite.position
+	_camera_offset = camera.position
 	sprite.play("idle_down")
 
 
@@ -91,7 +97,6 @@ func _build_frames() -> SpriteFrames:
 		frames.add_animation(idle)
 		frames.add_frame(idle, _cut(0, row))
 		frames.add_animation(walk)
-		frames.set_animation_speed(walk, walk_fps)
 		var walk_row := row
 		var guard_row := 4
 		if _has_guard and dir != "up":
@@ -99,7 +104,9 @@ func _build_frames() -> SpriteFrames:
 			if dir == "down" and _rows >= FRONT_GUARD_ROWS:
 				walk_row = 5
 				guard_row = 6
-		for col in 4:
+		var cols := sprite_sheet.get_width() / frame_size.x
+		frames.set_animation_speed(walk, walk_fps * cols / 4.0)
+		for col in cols:
 			frames.add_frame(walk, _cut(col, walk_row))
 		if _has_guard and dir != "up":
 			for kind in ["lower", "raise"]:
@@ -134,8 +141,18 @@ func _physics_process(delta: float) -> void:
 		velocity = velocity.move_toward(Vector2.ZERO, friction * delta)
 
 	move_and_slide()
+	_snap_to_pixels()
+	queue_redraw()
 	_update_animation(input != Vector2.ZERO, running)
 	interact_ray.target_position = facing * 20.0
+
+
+## Draws the sprite and camera on whole pixels so pixel art stays crisp
+## (the body itself still moves smoothly).
+func _snap_to_pixels() -> void:
+	var snap := global_position.round() - global_position
+	sprite.position = _sprite_offset + snap
+	camera.position = _camera_offset + snap
 
 
 func _unhandled_input(event: InputEvent) -> void:
@@ -185,5 +202,5 @@ func _update_animation(moving: bool, running: bool) -> void:
 func _draw() -> void:
 	# Soft shadow at the feet sells the 2.5D look.
 	draw_set_transform(Vector2.ZERO, 0.0, Vector2(1.0, 0.4))
-	draw_circle(Vector2(0, -1), 12.0, Color(0, 0, 0, 0.3))
+	draw_circle(Vector2(0, -1) + sprite.position - _sprite_offset, 12.0, Color(0, 0, 0, 0.3))
 	draw_set_transform(Vector2.ZERO, 0.0, Vector2.ONE)

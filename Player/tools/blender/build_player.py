@@ -21,6 +21,7 @@ BLEND = ARGS[1] if len(ARGS) > 1 else None
 os.makedirs(OUT, exist_ok=True)
 
 W, H = 32, 52
+WALK_FRAMES = 8
 SCALE = int(os.environ.get("PIXEL_SCALE", "1"))  # >1 renders big previews
 random.seed(7)
 
@@ -217,10 +218,13 @@ def reset():
     hips.location.z = 0.98
 
 
-def pose(guard=1.0, step=0.0, stance=0.0):
+def pose(guard=1.0, step=0.0, stance=0.0, phase=None):
     """guard: 1 fists up, 0 hands down. step: -1..1 which leg is forward.
-    stance: fighting stance (legs apart, knees bent)."""
+    stance: fighting stance (legs apart, knees bent).
+    phase: walk cycle angle; sets step and lifts the leg that swings forward."""
     reset()
+    if phase is not None:
+        step = math.sin(phase)
     L, R = JOINTS["L"], JOINTS["R"]
     # arms: guard lifts the forearms in front of the face; hands down hang loose
     for side, j, s in (("L", L, 1), ("R", R, -1)):
@@ -233,11 +237,15 @@ def pose(guard=1.0, step=0.0, stance=0.0):
         swing = -0.38 * step * s
         j["hp"].rotation_euler = (swing - 0.15 * stance * s, 0, 0)
         j["hp"].rotation_euler.y = -0.18 * stance * s
-        bend = 0.35 * stance + (0.5 if swing > 0.1 else 0.1 * abs(step))
+        if phase is not None:
+            bend = 0.12 + 0.55 * max(0.0, math.cos(phase) * s)
+        else:
+            bend = 0.35 * stance + (0.5 if swing > 0.1 else 0.1 * abs(step))
         j["kn"].rotation_euler = (bend, 0, 0)
         j["hp"].rotation_euler.x -= bend * 0.5
-    hips.location.z = 0.98 - 0.05 * stance - 0.02 * abs(step)
-    chest.rotation_euler = (0.08 * guard, 0, 0.1 * step)
+    hips.location.z = 0.98 - 0.05 * stance - 0.03 * abs(step)
+    neck.rotation_euler = (0, 0, -0.03 * step)  # keep the head (and mane) steady
+    chest.rotation_euler = (0.08 * guard, 0, 0.03 * step)
 
 
 # --- camera and light ----------------------------------------------------------
@@ -257,6 +265,7 @@ cam_data.shift_y = -0.02
 sun_data = bpy.data.lights.new("Sun", "SUN")
 sun_data.energy = 4
 sun_data.angle = 0.0
+sun_data.use_shadow = False  # cast shadows add noise that flickers between frames
 sun = bpy.data.objects.new("Sun", sun_data)
 scene.collection.objects.link(sun)
 sun.rotation_euler = (math.radians(50), math.radians(-30), math.radians(-35))
@@ -267,10 +276,8 @@ POSES = {
     "guard": dict(guard=1.0, stance=1.0),
     "guard_mid": dict(guard=0.5, stance=0.6),
     "guard_down": dict(guard=0.0, stance=0.2),
-    "walk0": dict(guard=0.0, step=0.0),
-    "walk1": dict(guard=0.0, step=1.0),
-    "walk2": dict(guard=0.0, step=0.0),
-    "walk3": dict(guard=0.0, step=-1.0),
+    # 8-frame walk cycle
+    **{f"walk{i}": dict(guard=0.0, phase=2 * math.pi * i / WALK_FRAMES) for i in range(WALK_FRAMES)},
 }
 
 for view, yaw in VIEWS.items():
