@@ -1,0 +1,331 @@
+[gd_scene format=3 uid="uid://btu7crh1hj1jq"]
+
+[ext_resource type="Texture2D" uid="uid://bqmmoob3a7dlf" path="res://Scene/lobby_citadel.png" id="1"]
+[ext_resource type="FontFile" uid="uid://bxh7w5n28e4si" path="res://Scene/citadel_pixel.fnt" id="2"]
+[ext_resource type="PackedScene" path="res://Scene/lobby_facilities.tscn" id="3_facilities"]
+
+[sub_resource type="StyleBoxFlat" id="clear"]
+bg_color = Color(0, 0, 0, 0)
+border_color = Color(0, 0, 0, 0)
+
+[sub_resource type="StyleBoxFlat" id="glow"]
+bg_color = Color(1, 0.73, 0.26, 0.06)
+border_width_left = 2
+border_width_top = 2
+border_width_right = 2
+border_width_bottom = 2
+border_color = Color(1, 0.78, 0.42, 0.65)
+
+[sub_resource type="StyleBoxFlat" id="sign"]
+bg_color = Color(0.075, 0.07, 0.07, 0.97)
+border_width_left = 2
+border_width_top = 2
+border_width_right = 2
+border_width_bottom = 2
+border_color = Color(0.51, 0.4, 0.27, 1)
+
+[sub_resource type="StyleBoxFlat" id="press"]
+bg_color = Color(0.31, 0.22, 0.11, 1)
+border_width_left = 2
+border_width_top = 2
+border_width_right = 2
+border_width_bottom = 2
+border_color = Color(1, 0.85, 0.55, 1)
+
+[sub_resource type="StyleBoxFlat" id="hover"]
+bg_color = Color(0.2, 0.13, 0.075, 0.98)
+border_width_left = 2
+border_width_top = 2
+border_width_right = 2
+border_width_bottom = 2
+border_color = Color(1, 0.77, 0.39, 1)
+
+[sub_resource type="StyleBoxFlat" id="focus"]
+bg_color = Color(0, 0, 0, 0)
+border_width_left = 3
+border_width_top = 3
+border_width_right = 3
+border_width_bottom = 3
+border_color = Color(1, 0.82, 0.52, 1)
+
+[sub_resource type="StyleBoxFlat" id="panel"]
+bg_color = Color(0.025, 0.055, 0.08, 0.94)
+border_width_left = 2
+border_width_top = 2
+border_width_right = 2
+border_width_bottom = 2
+border_color = Color(0.29, 0.38, 0.41, 1)
+
+[node name="Lobby" type="Node2D" unique_id=61234961]
+texture_filter = 1
+
+[node name="Environment" type="Sprite2D" parent="." unique_id=1328860267]
+texture_filter = 1
+scale = Vector2(0.9569378, 0.9564293)
+texture = ExtResource("1")
+centered = false
+
+[node name="PlayerSpawn" type="Marker2D" parent="." unique_id=596722025]
+position = Vector2(800, 827)
+
+[node name="BuildingButtons" type="Node2D" parent="." unique_id=151564825]
+
+[node name="ForgeBuilding" type="Button" parent="BuildingButtons" unique_id=1018573230]
+offset_left = 32.0
+offset_top = 255.0
+offset_right = 360.0
+offset_bottom = 476.0
+focus_mode = 0
+mouse_default_cursor_shape = 2
+theme_override_styles/normal = SubResource("clear")
+theme_override_styles/pressed = SubResource("glow")
+theme_override_styles/hover = SubResource("glow")
+
+[node name="ForgeSign" type="Button" parent="BuildingButtons" unique_id=1883484579]
+offset_left = 96.0
+offset_top = 486.0
+offset_right = 296.0
+offset_bottom = 520.0
+mouse_default_cursor_shape = 2
+theme_override_colors/font_color = Color(0.96, 0.85, 0.65, 1)
+theme_override_fonts/font = ExtResource("2")
+theme_override_font_sizes/font_size = 18
+theme_override_styles/normal = SubResource("sign")
+theme_override_styles/pressed = SubResource("press")
+theme_override_styles/hover = SubResource("hover")
+theme_override_styles/focus = SubResource("focus")
+text = "THE FORGE"
+
+[node name="InfirmaryBuilding" type="Button" parent="BuildingButtons" unique_id=1778971280]
+offset_left = 375.0
+offset_top = 296.0
+offset_right = 631.0
+offset_bottom = 477.0
+focus_mode = 0
+mouse_default_cursor_shape = 2
+theme_override_styles/normal = SubResource("clear")
+theme_override_styles/pressed = SubResource("glow")
+theme_override_styles/hover = SubResource("glow")
+
+[node name="InfirmarySign" type="Button" parent="BuildingButtons" unique_id=426480759]
+offset_left = 403.0
+offset_top = 486.0
+offset_right = 603.0
+offset_bottom = 520.0
+mouse_default_cursor_shape = 2
+theme_override_colors/font_color = Color(0.96, 0.85, 0.65, 1)
+theme_override_fonts/font = ExtResource("2")
+theme_override_font_sizes/font_size = 18
+theme_override_styles/normal = SubResource("sign")
+theme_override_styles/pressed = SubResource("press")
+theme_override_styles/hover = SubResource("hover")
+theme_override_styles/focus = SubResource("focus")
+text = "INFIRMARY"
+
+[node name="ClassHallBuilding" type="Button" parent="BuildingButtons" unique_id=888290759]
+offset_left = 1013.0
+offset_top = 285.0
+offset_right = 1294.0
+offset_bottom = 477.0
+focus_mode = 0
+mouse_default_cursor_shape = 2
+theme_override_styles/normal = SubResource("clear")
+theme_override_styles/pressed = SubResource("glow")
+theme_override_styles/hover = SubResource("glow")
+
+[node name="ClassHallSign" type="Button" parent="BuildingButtons" unique_id=1058953176]
+offset_left = 1053.0
+offset_top = 486.0
+offset_right = 1253.0
+offset_bottom = 520.0
+mouse_default_cursor_shape = 2
+theme_override_colors/font_color = Color(0.96, 0.85, 0.65, 1)
+theme_override_fonts/font = ExtResource("2")
+theme_override_font_sizes/font_size = 18
+theme_override_styles/normal = SubResource("sign")
+theme_override_styles/pressed = SubResource("press")
+theme_override_styles/hover = SubResource("hover")
+theme_override_styles/focus = SubResource("focus")
+text = "CLASS HALL"
+
+[node name="GreenhouseBuilding" type="Button" parent="BuildingButtons" unique_id=991309233]
+offset_left = 1311.0
+offset_top = 322.0
+offset_right = 1568.0
+offset_bottom = 484.0
+focus_mode = 0
+mouse_default_cursor_shape = 2
+theme_override_styles/normal = SubResource("clear")
+theme_override_styles/pressed = SubResource("glow")
+theme_override_styles/hover = SubResource("glow")
+
+[node name="GreenhouseSign" type="Button" parent="BuildingButtons" unique_id=92817548]
+offset_left = 1339.0
+offset_top = 496.0
+offset_right = 1539.0
+offset_bottom = 530.0
+mouse_default_cursor_shape = 2
+theme_override_colors/font_color = Color(0.96, 0.85, 0.65, 1)
+theme_override_fonts/font = ExtResource("2")
+theme_override_font_sizes/font_size = 18
+theme_override_styles/normal = SubResource("sign")
+theme_override_styles/pressed = SubResource("press")
+theme_override_styles/hover = SubResource("hover")
+theme_override_styles/focus = SubResource("focus")
+text = "GREENHOUSE"
+
+[node name="MarketBuilding" type="Button" parent="BuildingButtons" unique_id=1844148665]
+offset_left = 47.0
+offset_top = 583.0
+offset_right = 548.0
+offset_bottom = 801.0
+focus_mode = 0
+mouse_default_cursor_shape = 2
+theme_override_styles/normal = SubResource("clear")
+theme_override_styles/pressed = SubResource("glow")
+theme_override_styles/hover = SubResource("glow")
+
+[node name="MarketSign" type="Button" parent="BuildingButtons" unique_id=1080501567]
+offset_left = 197.0
+offset_top = 801.0
+offset_right = 397.0
+offset_bottom = 835.0
+mouse_default_cursor_shape = 2
+theme_override_colors/font_color = Color(0.96, 0.85, 0.65, 1)
+theme_override_fonts/font = ExtResource("2")
+theme_override_font_sizes/font_size = 18
+theme_override_styles/normal = SubResource("sign")
+theme_override_styles/pressed = SubResource("press")
+theme_override_styles/hover = SubResource("hover")
+theme_override_styles/focus = SubResource("focus")
+text = "MARKET"
+
+[node name="AuctionHouseBuilding" type="Button" parent="BuildingButtons" unique_id=1973404917]
+offset_left = 1108.0
+offset_top = 520.0
+offset_right = 1531.0
+offset_bottom = 801.0
+focus_mode = 0
+mouse_default_cursor_shape = 2
+theme_override_styles/normal = SubResource("clear")
+theme_override_styles/pressed = SubResource("glow")
+theme_override_styles/hover = SubResource("glow")
+
+[node name="AuctionHouseSign" type="Button" parent="BuildingButtons" unique_id=1292794248]
+offset_left = 1219.0
+offset_top = 808.0
+offset_right = 1419.0
+offset_bottom = 842.0
+mouse_default_cursor_shape = 2
+theme_override_colors/font_color = Color(0.96, 0.85, 0.65, 1)
+theme_override_fonts/font = ExtResource("2")
+theme_override_font_sizes/font_size = 18
+theme_override_styles/normal = SubResource("sign")
+theme_override_styles/pressed = SubResource("press")
+theme_override_styles/hover = SubResource("hover")
+theme_override_styles/focus = SubResource("focus")
+text = "AUCTION HOUSE"
+
+[node name="DeployBuilding" type="Button" parent="BuildingButtons" unique_id=285210755]
+offset_left = 752.0
+offset_top = 279.0
+offset_right = 888.0
+offset_bottom = 423.0
+focus_mode = 0
+mouse_default_cursor_shape = 2
+theme_override_styles/normal = SubResource("clear")
+theme_override_styles/pressed = SubResource("glow")
+theme_override_styles/hover = SubResource("glow")
+
+[node name="DeploySign" type="Button" parent="BuildingButtons" unique_id=2033836752]
+offset_left = 742.0
+offset_top = 426.0
+offset_right = 898.0
+offset_bottom = 460.0
+mouse_default_cursor_shape = 2
+theme_override_colors/font_color = Color(0.96, 0.85, 0.65, 1)
+theme_override_fonts/font = ExtResource("2")
+theme_override_font_sizes/font_size = 18
+theme_override_styles/normal = SubResource("sign")
+theme_override_styles/pressed = SubResource("press")
+theme_override_styles/hover = SubResource("hover")
+theme_override_styles/focus = SubResource("focus")
+text = "DEPLOY"
+
+[node name="Interface" type="CanvasLayer" parent="." unique_id=289473842]
+
+[node name="Identity" type="Panel" parent="Interface" unique_id=1554424718]
+offset_left = 24.0
+offset_top = 20.0
+offset_right = 424.0
+offset_bottom = 98.0
+mouse_filter = 2
+theme_override_styles/panel = SubResource("panel")
+
+[node name="Title" type="Label" parent="Interface/Identity" unique_id=2080176568]
+layout_mode = 0
+offset_left = 16.0
+offset_top = 12.0
+offset_right = 384.0
+offset_bottom = 40.0
+theme_override_colors/font_color = Color(0.96, 0.85, 0.65, 1)
+theme_override_fonts/font = ExtResource("2")
+theme_override_font_sizes/font_size = 25
+text = "MAN / MACHINE"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="Subtitle" type="Label" parent="Interface/Identity" unique_id=1870814643]
+layout_mode = 0
+offset_left = 16.0
+offset_top = 48.0
+offset_right = 384.0
+offset_bottom = 68.0
+theme_override_colors/font_color = Color(0.96, 0.85, 0.65, 1)
+theme_override_fonts/font = ExtResource("2")
+theme_override_font_sizes/font_size = 12
+text = "THE CITADEL - HUMANITYS HIDEOUT"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="Sector" type="Panel" parent="Interface" unique_id=162452723]
+offset_left = 1300.0
+offset_top = 20.0
+offset_right = 1576.0
+offset_bottom = 80.0
+mouse_filter = 2
+theme_override_styles/panel = SubResource("panel")
+
+[node name="SectorText" type="Label" parent="Interface/Sector" unique_id=679026714]
+layout_mode = 0
+offset_left = 14.0
+offset_top = 8.0
+offset_right = 262.0
+offset_bottom = 52.0
+theme_override_colors/font_color = Color(0.96, 0.85, 0.65, 1)
+theme_override_fonts/font = ExtResource("2")
+theme_override_font_sizes/font_size = 12
+text = "SECTOR 67 / SAFE ZONE
+RESISTANCE STRONGHOLD"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="Footer" type="Panel" parent="Interface" unique_id=35303730]
+offset_top = 866.0
+offset_right = 1600.0
+offset_bottom = 900.0
+mouse_filter = 2
+theme_override_styles/panel = SubResource("panel")
+
+[node name="FooterText" type="Label" parent="Interface/Footer" unique_id=1305600010]
+layout_mode = 0
+offset_right = 1600.0
+offset_bottom = 34.0
+theme_override_colors/font_color = Color(0.96, 0.85, 0.65, 1)
+theme_override_fonts/font = ExtResource("2")
+theme_override_font_sizes/font_size = 14
+text = "THE LAST LIGHT OF HUMANITY   /   CHOOSE A FACILITY TO PREPARE"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="LobbyFacilities" parent="." unique_id=697768440 instance=ExtResource("3_facilities")]

@@ -1,0 +1,17 @@
+[remap]
+
+importer="font_data_bmfont"
+type="FontFile"
+uid="uid://bxh7w5n28e4si"
+path="res://.godot/imported/citadel_pixel.fnt-2ec1c99cd709a1c900f376a4e5ddf593.fontdata"
+
+[deps]
+
+source_file="res://Scene/citadel_pixel.fnt"
+dest_files=["res://.godot/imported/citadel_pixel.fnt-2ec1c99cd709a1c900f376a4e5ddf593.fontdata"]
+
+[params]
+
+fallbacks=[]
+compress=true
+scaling_mode=2
