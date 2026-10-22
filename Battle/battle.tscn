@@ -1,0 +1,197 @@
+[gd_scene format=3 uid="uid://b3qkvs63kureq"]
+
+[ext_resource type="Script" uid="uid://57rntanjtxqy" path="res://battle/battle.gd" id="1_battle"]
+[ext_resource type="FontFile" uid="uid://vxpik74top0n" path="res://Battle/boldpixels.ttf" id="2_o5tja"]
+
+[sub_resource type="LabelSettings" id="LabelSettings_ksnli"]
+font = ExtResource("2_o5tja")
+font_size = 25
+
+[sub_resource type="LabelSettings" id="LabelSettings_o5tja"]
+font = ExtResource("2_o5tja")
+font_size = 20
+
+[sub_resource type="LabelSettings" id="LabelSettings_5pv0p"]
+font = ExtResource("2_o5tja")
+font_size = 25
+
+[sub_resource type="LabelSettings" id="LabelSettings_do635"]
+font = ExtResource("2_o5tja")
+font_size = 20
+
+[sub_resource type="LabelSettings" id="LabelSettings_ploow"]
+font = ExtResource("2_o5tja")
+font_size = 45
+
+[node name="Battle" type="Control" unique_id=1312677713]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_battle")
+
+[node name="Background" type="ColorRect" parent="." unique_id=1797002358]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+color = Color(0.20846581, 0.27102083, 0.40829423, 0.5372549)
+
+[node name="EnemySprite" type="TextureRect" parent="." unique_id=813885903]
+unique_name_in_owner = true
+layout_mode = 0
+offset_left = 780.0
+offset_top = 60.0
+offset_right = 980.0
+offset_bottom = 260.0
+expand_mode = 1
+stretch_mode = 5
+
+[node name="PlayerSprite" type="TextureRect" parent="." unique_id=145662068]
+unique_name_in_owner = true
+layout_mode = 0
+offset_left = 140.0
+offset_top = 240.0
+offset_right = 340.0
+offset_bottom = 440.0
+expand_mode = 1
+stretch_mode = 5
+
+[node name="EnemyPanel" type="PanelContainer" parent="." unique_id=1842637327]
+layout_mode = 0
+offset_left = 40.0
+offset_top = 40.0
+offset_right = 380.0
+offset_bottom = 130.0
+
+[node name="VBox" type="VBoxContainer" parent="EnemyPanel" unique_id=488353610]
+layout_mode = 2
+
+[node name="EnemyName" type="Label" parent="EnemyPanel/VBox" unique_id=75357829]
+unique_name_in_owner = true
+layout_mode = 2
+text = "Enemy  Lv5"
+label_settings = SubResource("LabelSettings_ksnli")
+
+[node name="EnemyHPBar" type="ProgressBar" parent="EnemyPanel/VBox" unique_id=13118002]
+unique_name_in_owner = true
+layout_mode = 2
+show_percentage = false
+
+[node name="EnemyHPLabel" type="Label" parent="EnemyPanel/VBox" unique_id=1641696970]
+unique_name_in_owner = true
+layout_mode = 2
+text = "HP 0/0"
+label_settings = SubResource("LabelSettings_o5tja")
+horizontal_alignment = 2
+
+[node name="PlayerPanel" type="PanelContainer" parent="." unique_id=1728424846]
+layout_mode = 0
+offset_left = 760.0
+offset_top = 320.0
+offset_right = 1100.0
+offset_bottom = 410.0
+
+[node name="VBox" type="VBoxContainer" parent="PlayerPanel" unique_id=799456128]
+layout_mode = 2
+
+[node name="PlayerName" type="Label" parent="PlayerPanel/VBox" unique_id=1403549532]
+unique_name_in_owner = true
+layout_mode = 2
+text = "Player  Lv5"
+label_settings = SubResource("LabelSettings_5pv0p")
+
+[node name="PlayerHPBar" type="ProgressBar" parent="PlayerPanel/VBox" unique_id=147985689]
+unique_name_in_owner = true
+layout_mode = 2
+show_percentage = false
+
+[node name="PlayerHPLabel" type="Label" parent="PlayerPanel/VBox" unique_id=754419666]
+unique_name_in_owner = true
+layout_mode = 2
+text = "HP 0/0"
+label_settings = SubResource("LabelSettings_do635")
+horizontal_alignment = 2
+
+[node name="BottomPanel" type="PanelContainer" parent="." unique_id=1547649840]
+layout_mode = 1
+anchors_preset = 12
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 20.0
+offset_top = -180.0
+offset_right = -20.0
+offset_bottom = -20.0
+grow_horizontal = 2
+grow_vertical = 0
+
+[node name="HBox" type="HBoxContainer" parent="BottomPanel" unique_id=1771328373]
+layout_mode = 2
+
+[node name="MessageLabel" type="Label" parent="BottomPanel/HBox" unique_id=1733099606]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(400, 0)
+layout_mode = 2
+size_flags_horizontal = 3
+label_settings = SubResource("LabelSettings_ploow")
+vertical_alignment = 1
+autowrap_mode = 3
+
+[node name="ActionMenu" type="GridContainer" parent="BottomPanel/HBox" unique_id=1353164914]
+unique_name_in_owner = true
+layout_mode = 2
+columns = 2
+
+[node name="AttackButton" type="Button" parent="BottomPanel/HBox/ActionMenu" unique_id=724872244]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(150, 75)
+layout_mode = 2
+theme_override_fonts/font = ExtResource("2_o5tja")
+theme_override_font_sizes/font_size = 25
+text = "Attack"
+
+[node name="DefendButton" type="Button" parent="BottomPanel/HBox/ActionMenu" unique_id=1166347427]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(150, 75)
+layout_mode = 2
+theme_override_fonts/font = ExtResource("2_o5tja")
+theme_override_font_sizes/font_size = 25
+text = "Defend"
+
+[node name="ItemButton" type="Button" parent="BottomPanel/HBox/ActionMenu" unique_id=1364141473]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(150, 75)
+layout_mode = 2
+theme_override_fonts/font = ExtResource("2_o5tja")
+theme_override_font_sizes/font_size = 25
+text = "Item"
+
+[node name="EscapeButton" type="Button" parent="BottomPanel/HBox/ActionMenu" unique_id=188922380]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(150, 75)
+layout_mode = 2
+theme_override_fonts/font = ExtResource("2_o5tja")
+theme_override_font_sizes/font_size = 25
+text = "Escape"
+
+[node name="ItemMenu" type="VBoxContainer" parent="BottomPanel/HBox" unique_id=2124028850]
+unique_name_in_owner = true
+visible = false
+layout_mode = 2
+
+[node name="TurnLabel" type="Label" parent="." unique_id=857400997]
+layout_mode = 1
+anchors_preset = 5
+anchor_left = 0.5
+anchor_right = 0.5
+offset_left = -80.0
+offset_top = 12.0
+offset_right = 80.0
+offset_bottom = 38.0
+grow_horizontal = 2
+horizontal_alignment = 1
