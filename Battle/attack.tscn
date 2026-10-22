@@ -1,0 +1,28 @@
+[gd_scene load_steps=6 format=3]
+[ext_resource type="PackedScene" path="res://Battle/battle_background.tscn" id="1"]
+[ext_resource type="PackedScene" path="res://Battle/adam.tscn" id="2"]
+[ext_resource type="PackedScene" path="res://Battle/scout_bot.tscn" id="3"]
+[ext_resource type="Script" path="res://Battle/battle_controller.gd" id="4"]
+[ext_resource type="PackedScene" path="res://Battle/combat_hud.tscn" id="5"]
+[node name="Battle" type="Control"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+texture_filter = 1
+script = ExtResource("4")
+[node name="Background" parent="." instance=ExtResource("1")]
+[node name="Combatants" type="Node2D" parent="."]
+[node name="PlayerAnchor" type="Marker2D" parent="Combatants"]
+position = Vector2(425,492)
+[node name="Adam" parent="Combatants/PlayerAnchor" instance=ExtResource("2")]
+scale = Vector2(1.45,1.45)
+[node name="EnemyAnchor" type="Marker2D" parent="Combatants"]
+position = Vector2(1210,312)
+[node name="ScoutBot" parent="Combatants/EnemyAnchor" instance=ExtResource("3")]
+[node name="Effects" type="Node2D" parent="."]
+[node name="BattleUI" type="CanvasLayer" parent="."]
+layer = 10
+[node name="HUD" parent="BattleUI" instance=ExtResource("5")]

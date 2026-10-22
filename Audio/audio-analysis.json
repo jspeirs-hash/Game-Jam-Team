@@ -1,0 +1,187 @@
+{
+  "Music/hideout.wav": {
+    "seconds": 43.636,
+    "peak": 0.78,
+    "rms": 0.1358
+  },
+  "Music/battle.wav": {
+    "seconds": 33.103,
+    "peak": 0.78,
+    "rms": 0.1059
+  },
+  "Music/credits.wav": {
+    "seconds": 26.667,
+    "peak": 0.7703,
+    "rms": 0.14
+  },
+  "Music/snow.wav": {
+    "seconds": 32.0,
+    "peak": 0.5687,
+    "rms": 0.14
+  },
+  "Music/shadow.wav": {
+    "seconds": 24.0,
+    "peak": 0.7284,
+    "rms": 0.1399
+  },
+  "SFX/wind.wav": {
+    "seconds": 12.0,
+    "peak": 0.78,
+    "rms": 0.1311
+  },
+  "SFX/ui_hover.wav": {
+    "seconds": 0.06,
+    "peak": 0.6966,
+    "rms": 0.1823
+  },
+  "SFX/ui_click.wav": {
+    "seconds": 0.14,
+    "peak": 0.6083,
+    "rms": 0.1463
+  },
+  "SFX/dialogue_tick.wav": {
+    "seconds": 0.06,
+    "peak": 0.6185,
+    "rms": 0.2734
+  },
+  "SFX/escape_success.wav": {
+    "seconds": 0.55,
+    "peak": 0.78,
+    "rms": 0.1639
+  },
+  "SFX/escape_fail.wav": {
+    "seconds": 0.4,
+    "peak": 0.78,
+    "rms": 0.2667
+  },
+  "SFX/footstep.wav": {
+    "seconds": 0.1,
+    "peak": 0.5907,
+    "rms": 0.1067
+  },
+  "SFX/scout_signal.wav": {
+    "seconds": 0.23,
+    "peak": 0.72,
+    "rms": 0.2783
+  },
+  "SFX/atom_signal.wav": {
+    "seconds": 0.3,
+    "peak": 0.78,
+    "rms": 0.1994
+  },
+  "SFX/smasher_signal.wav": {
+    "seconds": 0.45,
+    "peak": 0.7477,
+    "rms": 0.1321
+  },
+  "SFX/gate.wav": {
+    "seconds": 0.9,
+    "peak": 0.78,
+    "rms": 0.1323
+  },
+  "SFX/purchase.wav": {
+    "seconds": 0.48,
+    "peak": 0.78,
+    "rms": 0.181
+  },
+  "SFX/upgrade.wav": {
+    "seconds": 1.3,
+    "peak": 0.78,
+    "rms": 0.1624
+  },
+  "SFX/heal.wav": {
+    "seconds": 0.8,
+    "peak": 0.78,
+    "rms": 0.1397
+  },
+  "SFX/sp_heal.wav": {
+    "seconds": 0.9,
+    "peak": 0.78,
+    "rms": 0.1847
+  },
+  "SFX/guard.wav": {
+    "seconds": 0.5,
+    "peak": 0.78,
+    "rms": 0.1741
+  },
+  "SFX/skill.wav": {
+    "seconds": 0.65,
+    "peak": 0.7038,
+    "rms": 0.1341
+  },
+  "SFX/swing.wav": {
+    "seconds": 0.2,
+    "peak": 0.78,
+    "rms": 0.111
+  },
+  "SFX/hit_metal.wav": {
+    "seconds": 0.3,
+    "peak": 0.7778,
+    "rms": 0.1072
+  },
+  "SFX/hit_body.wav": {
+    "seconds": 0.28,
+    "peak": 0.6556,
+    "rms": 0.1165
+  },
+  "SFX/cannon.wav": {
+    "seconds": 0.7,
+    "peak": 0.78,
+    "rms": 0.0982
+  },
+  "SFX/robot_down.wav": {
+    "seconds": 1.0,
+    "peak": 0.7673,
+    "rms": 0.1173
+  },
+  "SFX/victory.wav": {
+    "seconds": 1.4,
+    "peak": 0.78,
+    "rms": 0.2349
+  },
+  "SFX/defeat.wav": {
+    "seconds": 1.4,
+    "peak": 0.78,
+    "rms": 0.2071
+  },
+  "SFX/rat_fall.wav": {
+    "seconds": 0.4,
+    "peak": 0.7392,
+    "rms": 0.1425
+  },
+  "SFX/portal.wav": {
+    "seconds": 1.8,
+    "peak": 0.78,
+    "rms": 0.1791
+  },
+  "SFX/shadow_hit.wav": {
+    "seconds": 0.85,
+    "peak": 0.78,
+    "rms": 0.0972
+  },
+  "SFX/crunch.wav": {
+    "seconds": 0.65,
+    "peak": 0.78,
+    "rms": 0.0637
+  },
+  "SFX/bandage.wav": {
+    "seconds": 0.65,
+    "peak": 0.78,
+    "rms": 0.0883
+  },
+  "SFX/hideout_air.wav": {
+    "seconds": 12.0,
+    "peak": 0.78,
+    "rms": 0.1317
+  },
+  "SFX/cat_spawn_voice.wav": {
+    "seconds": 2.0,
+    "peak": 0.78,
+    "rms": 0.1675
+  },
+  "SFX/rat_death_voice.wav": {
+    "seconds": 7.0,
+    "peak": 0.78,
+    "rms": 0.2392
+  }
+}

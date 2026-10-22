@@ -15,13 +15,11 @@ run/main_scene="res://Scene/lobby.tscn"
 config/features=PackedStringArray("4.6", "Forward Plus")
 config/icon="res://icon.svg"
 
-[physics]
+[autoload]
 
-3d/physics_engine="Jolt Physics"
-
-[rendering]
-
-rendering_device/driver.windows="d3d12"
+RunState="*res://scripts/run_state.gd"
+GameAudio="*res://scripts/game_audio.gd"
+SceneFlow="*res://scripts/scene_flow.gd"
 
 [display]
 
@@ -29,3 +27,10 @@ window/size/viewport_width=1600
 window/size/viewport_height=900
 window/stretch/mode="canvas_items"
 
+[physics]
+
+3d/physics_engine="Jolt Physics"
+
+[rendering]
+
+rendering_device/driver.windows="d3d12"

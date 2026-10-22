@@ -1,0 +1,27 @@
+[gd_scene load_steps=3 format=3]
+
+[ext_resource type="SpriteFrames" path="res://Battle/scout_bot_frames.tres" id="1"]
+
+[ext_resource type="Script" path="res://Battle/combat_actor.gd" id="2"]
+
+[node name="ScoutBot" type="Node2D"]
+
+texture_filter = 1
+
+script = ExtResource("2")
+
+facing_left = true
+
+fighter_name = "SCOUT BOT"
+
+[node name="Sprite" type="AnimatedSprite2D" parent="."]
+
+sprite_frames = ExtResource("1")
+
+animation = &"idle"
+
+autoplay = "idle"
+
+offset = Vector2(0, -96)
+
+flip_h = true

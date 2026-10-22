@@ -1,0 +1,89 @@
+[gd_resource type="SpriteFrames" format=3 uid="uid://tmykg1x45du"]
+
+[ext_resource type="Texture2D" uid="uid://b1aw61i0tm0nw" path="res://Battle/Art/shadow_cat_sprites.png" id="1"]
+[ext_resource type="Texture2D" uid="uid://c1t6xysoohd3h" path="res://Battle/Art/shadow_paw_sprites.png" id="2"]
+
+[sub_resource type="AtlasTexture" id="paw2"]
+atlas = ExtResource("2")
+region = Rect2(792, 6, 354, 537)
+margin = Rect2(260.66, 23, 446, 63)
+filter_clip = true
+
+[sub_resource type="AtlasTexture" id="paw4"]
+atlas = ExtResource("2")
+region = Rect2(9, 543, 446, 536)
+margin = Rect2(126.66, 24, 354, 64)
+filter_clip = true
+
+[sub_resource type="AtlasTexture" id="f0_0"]
+atlas = ExtResource("1")
+region = Rect2(9, 17, 432, 826)
+margin = Rect2(37.25, 15, 68, 74)
+filter_clip = true
+
+[resource]
+animations = [{
+"frames": [{
+"duration": 2.4,
+"texture": SubResource("paw2")
+}, {
+"duration": 2.4,
+"texture": SubResource("paw4")
+}],
+"loop": false,
+"name": &"attack",
+"speed": 12.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("f0_0")
+}, {
+"duration": 1.0,
+"texture": SubResource("f0_0")
+}, {
+"duration": 1.0,
+"texture": SubResource("f0_0")
+}, {
+"duration": 1.0,
+"texture": SubResource("f0_0")
+}, {
+"duration": 1.0,
+"texture": SubResource("f0_0")
+}, {
+"duration": 1.0,
+"texture": SubResource("f0_0")
+}, {
+"duration": 1.0,
+"texture": SubResource("f0_0")
+}, {
+"duration": 1.0,
+"texture": SubResource("f0_0")
+}, {
+"duration": 1.0,
+"texture": SubResource("f0_0")
+}, {
+"duration": 1.0,
+"texture": SubResource("f0_0")
+}, {
+"duration": 1.0,
+"texture": SubResource("f0_0")
+}, {
+"duration": 1.0,
+"texture": SubResource("f0_0")
+}, {
+"duration": 1.0,
+"texture": SubResource("f0_0")
+}, {
+"duration": 1.0,
+"texture": SubResource("f0_0")
+}, {
+"duration": 1.0,
+"texture": SubResource("f0_0")
+}, {
+"duration": 1.0,
+"texture": SubResource("f0_0")
+}],
+"loop": true,
+"name": &"idle",
+"speed": 16.0
+}]
