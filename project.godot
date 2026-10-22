@@ -11,7 +11,11 @@ config_version=5
 [application]
 
 config/name="Game-Jam-Team"
+<<<<<<< HEAD
 run/main_scene="uid://ctre70i7g0kfu"
+=======
+run/main_scene="res://Scene/lobby.tscn"
+>>>>>>> Jaymie
 config/features=PackedStringArray("4.6", "Forward Plus")
 config/icon="res://icon.svg"
 
@@ -22,3 +26,10 @@ config/icon="res://icon.svg"
 [rendering]
 
 rendering_device/driver.windows="d3d12"
+
+[display]
+
+window/size/viewport_width=1600
+window/size/viewport_height=900
+window/stretch/mode="canvas_items"
+
